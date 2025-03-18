@@ -1,0 +1,66 @@
+{
+  "name": "@huberyyang/todo-vue3-init",
+  "type": "module",
+  "version": "0.1.0",
+  "packageManager": "pnpm@9.15.4",
+  "description": "The Vue 3 project init CLI",
+  "author": "HuberyYang",
+  "license": "MIT",
+  "homepage": "https://github.com/Hub-yang/todo-vue3-init",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hub-yang/todo-vue3-init.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hub-yang/todo-vue3-init/issues"
+  },
+  "keywords": [
+    "scripts",
+    "node",
+    "bash",
+    "bin",
+    "sh",
+    "cli",
+    "template",
+    "vite"
+  ],
+  "bin": {
+    "create-vue": "outfile.cjs"
+  },
+  "files": [
+    "!template/**/node_modules/.bin/*",
+    "locales",
+    "outfile.cjs",
+    "template"
+  ],
+  "engines": {
+    "node": ">=v18.3.0"
+  },
+  "scripts": {
+    "release": "bumpp && npm publish",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.10.1",
+    "@clack/prompts": "^0.10.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.13.10",
+    "@types/prompts": "^2.4.9",
+    "@vue/tsconfig": "^0.7.0",
+    "ejs": "^3.1.10",
+    "esbuild": "^0.25.1",
+    "eslint": "^9.22.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "picocolors": "^1.1.1",
+    "zx": "^8.4.1"
+  },
+  "lint-staged": {
+    "*": "eslint . --fix"
+  }
+}
