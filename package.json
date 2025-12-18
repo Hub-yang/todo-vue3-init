@@ -1,9 +1,9 @@
 {
-  "name": "@huberyyang/todo-vue3-init",
+  "name": "@huberyyang/hubery-create",
   "type": "module",
   "version": "0.1.0",
   "packageManager": "pnpm@9.15.4",
-  "description": "The Vue 3 project init CLI",
+  "description": "Project init CLI",
   "author": "HuberyYang",
   "license": "MIT",
   "homepage": "https://github.com/Hub-yang/todo-vue3-init",
@@ -25,18 +25,20 @@
     "vite"
   ],
   "bin": {
-    "create-vue": "outfile.cjs"
+    "huebry-create": "bin/hubery-create.js"
   },
   "files": [
-    "!template/**/node_modules/.bin/*",
-    "locales",
-    "outfile.cjs",
-    "template"
+    "dist",
+    "index.js",
+    "template-*"
   ],
   "engines": {
-    "node": ">=v18.3.0"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "typecheck": "tsc",
     "release": "bumpp && npm publish",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -44,21 +46,18 @@
     "commitlint": "commitlint --edit"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.10.1",
-    "@clack/prompts": "^0.10.0",
+    "@antfu/eslint-config": "^6.2.0",
+    "@clack/prompts": "^0.11.0",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
-    "@tsconfig/node22": "^22.0.0",
-    "@types/node": "^22.13.10",
-    "@types/prompts": "^2.4.9",
-    "@vue/tsconfig": "^0.7.0",
-    "ejs": "^3.1.10",
-    "esbuild": "^0.25.1",
+    "@types/node": "^24.10.0",
+    "cross-spawn": "^7.0.6",
     "eslint": "^9.22.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
+    "lint-staged": "^16.2.6",
+    "mri": "^1.2.0",
     "picocolors": "^1.1.1",
-    "zx": "^8.4.1"
+    "tsdown": "^0.15.5"
   },
   "lint-staged": {
     "*": "eslint . --fix"
