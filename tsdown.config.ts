@@ -6,6 +6,5 @@ export default defineConfig(() => ({
   outDir: 'dist',
   minify: true,
   tsconfig: 'tsconfig.json',
-  // noEmit: true,
-  // esm: true,
+  fixedExtension: false,
 }))

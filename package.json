@@ -1,7 +1,7 @@
 {
   "name": "@huberyyang/hubery-create",
   "type": "module",
-  "version": "0.1.0",
+  "version": "v1.0.0-alpha.1",
   "packageManager": "pnpm@9.15.4",
   "description": "Project init CLI",
   "author": "HuberyYang",
@@ -25,7 +25,7 @@
     "vite"
   ],
   "bin": {
-    "huebry-create": "bin/hubery-create.js"
+    "hubery-create": "bin/hubery-create.js"
   },
   "files": [
     "dist",
@@ -37,6 +37,7 @@
   },
   "scripts": {
     "dev": "tsdown --watch",
+    "preview": "node ./bin/hubery-create.js",
     "build": "tsdown",
     "typecheck": "tsc",
     "release": "bumpp && npm publish",
@@ -45,16 +46,21 @@
     "prepare": "husky",
     "commitlint": "commitlint --edit"
   },
+  "dependencies": {
+    "@huberyyang/todo-scripts": "^1.0.8"
+  },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
+    "@antfu/eslint-config": "^6.7.1",
     "@clack/prompts": "^0.11.0",
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
+    "@types/cross-spawn": "^6.0.6",
     "@types/node": "^24.10.0",
+    "@vercel/detect-agent": "^1.0.0",
     "cross-spawn": "^7.0.6",
-    "eslint": "^9.22.0",
+    "eslint": "^9.39.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
+    "lint-staged": "^16.2.7",
     "mri": "^1.2.0",
     "picocolors": "^1.1.1",
     "tsdown": "^0.15.5"
