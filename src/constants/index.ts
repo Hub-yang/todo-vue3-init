@@ -32,3 +32,5 @@ ${redBright ('lit-ts              lit')}
 ${red ('svelte-ts           svelte')}
 ${blue ('solid-ts            solid')}
 ${blueBright('qwik-ts             qwik')}`
+
+export const defaultTargetDir = 'vite-project'

@@ -1,6 +1,9 @@
 import process from 'node:process'
+import * as prompts from '@clack/prompts'
+import { determineAgent } from '@vercel/detect-agent'
 import mri from 'mri'
-import { helpMessage } from './constants'
+import { defaultTargetDir, helpMessage } from './constants'
+import { cancel, formatTargetDir, pkgFromUserAgent } from './utils'
 
 interface Options {
   template?: string
@@ -17,12 +20,56 @@ const argv = mri<Options>(process.argv.slice(2), {
 })
 
 async function init() {
-  const help = argv.help
+  const argTargetDir = argv._[0] ? formatTargetDir(String(argv._[0])) : undefined
+  // const argTemplate = argv.template
+  // const argOverwrite = argv.overwrite
+  // const argImmediate = argv.immediate
+  const argInteractive = argv.interactive
 
+  const help = argv.help
   if (help) {
     console.log(helpMessage)
     return false
   }
+
+  const interactive = argInteractive ?? process.stdin.isTTY
+  // 检测 AI 代理环境，以获得更好的代理体验 (AX)
+  const { isAgent } = await determineAgent()
+
+  if (isAgent && interactive) {
+    // 要一次性创建项目，请运行：create-vite <目录> --no-interactive --template <模板>
+    console.log('\nTo create in one go, run: create-vite <DIRECTORY> --no-interactive --template <TEMPLATE>\n')
+  }
+
+  const pkgInfo = pkgFromUserAgent(process.env.npm_config_user_agent)
+
+  console.log('pkgInfo :>>> ', pkgInfo)
+
+  // 1.获取项目名称和目标目录
+  let targetDir = argTargetDir
+  if (!targetDir) {
+    if (interactive) {
+      const projectName = await prompts.text({
+        message: '项目名称:',
+        defaultValue: defaultTargetDir,
+        placeholder: defaultTargetDir,
+        validate(value) {
+          return !value || formatTargetDir(value).length > 0 ? undefined : '项目名称无效'
+        },
+      })
+
+      if (prompts.isCancel(projectName)) {
+        return cancel()
+      }
+
+      targetDir = formatTargetDir(projectName)
+    }
+    else {
+      targetDir = defaultTargetDir
+    }
+  }
+
+  // 2.如果目录存在且不为空，则进行处理
 }
 
 init()
