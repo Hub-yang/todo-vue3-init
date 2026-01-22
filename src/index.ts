@@ -1,9 +1,10 @@
+import fs from 'node:fs'
 import process from 'node:process'
 import * as prompts from '@clack/prompts'
 import { determineAgent } from '@vercel/detect-agent'
 import mri from 'mri'
 import { defaultTargetDir, helpMessage } from './constants'
-import { cancel, formatTargetDir, pkgFromUserAgent } from './utils'
+import { cancel, emptyDir, formatTargetDir, isEmpty, pkgFromUserAgent } from './utils'
 
 interface Options {
   template?: string
@@ -22,7 +23,7 @@ const argv = mri<Options>(process.argv.slice(2), {
 async function init() {
   const argTargetDir = argv._[0] ? formatTargetDir(String(argv._[0])) : undefined
   // const argTemplate = argv.template
-  // const argOverwrite = argv.overwrite
+  const argOverwrite = argv.overwrite
   // const argImmediate = argv.immediate
   const argInteractive = argv.interactive
 
@@ -70,6 +71,48 @@ async function init() {
   }
 
   // 2.如果目录存在且不为空，则进行处理
+  if (fs.existsSync(targetDir) && !isEmpty(targetDir)) {
+    let overwrite: 'yes' | 'no' | 'ignore' | undefined = argOverwrite ? 'yes' : undefined
+
+    if (!overwrite) {
+      if (interactive) {
+        const res = await prompts.select({
+          message: `${targetDir === '.' ? '当前目录' : `目标目录 "${targetDir}"`} 不为空，请选择如何继续`,
+          options: [
+            {
+              label: '取消操作',
+              value: 'no',
+            },
+            {
+              label: '删除现有文件并继续',
+              value: 'yes',
+            },
+            {
+              label: '忽略文件并继续',
+              value: 'ignore',
+            },
+          ],
+        })
+        if (prompts.isCancel(res)) {
+          return cancel()
+        }
+
+        overwrite = res
+      }
+      else {
+        overwrite = 'no'
+      }
+    }
+
+    switch (overwrite) {
+      case 'yes':
+        emptyDir(targetDir)
+        break
+      case 'no':
+        cancel()
+        break
+    }
+  }
 }
 
 init()
